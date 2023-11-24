@@ -14,7 +14,7 @@ class Coach {
   }
 
   setName(name) {
-    this.name = name
+    this.name = name;
   }
   setHateMenus(hateMenusString) {
     const menus = hateMenusString.split(',');
@@ -23,8 +23,14 @@ class Coach {
 
   setRecommandMenus(categoryArray) {
     categoryArray.forEach((categoryNumber) => {
-      this.recommandMenus.push(this.pickRandomMenu(categoryNumber));
+      const randomMenu = this.pickRandomMenu(categoryNumber);
+      this.recommandMenus.push(randomMenu);
     });
+    
+    if (this.recommandMenus.length !== new Set(this.recommandMenus).size) {
+      this.recommandMenus = [];
+      return this.setRecommandMenus(categoryArray);
+    }
   }
 
   pickRandomMenu(categoryNumber) {
@@ -39,11 +45,12 @@ class Coach {
 }
 
 export default Coach;
+
 /*
 const a = new Coach();
 
 a.setName('수향');
 a.setHateMenus('스시,규동,우동,미소시루');
-const categoryArray = [2,2,1,3,4];
+const categoryArray = [2,2,2,2,2];
 a.setRecommandMenus(categoryArray);
 console.log(a.recommandMenus);*/
