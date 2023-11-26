@@ -6,25 +6,15 @@ const SAMPLE = {
   양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
 };
 
+const newArray = Object.entries(SAMPLE).map(([category, menus]) => {
+  const array = menus.split(',').map((element) => element.trim());
+  return [category, array];
+});
+
 const map = new Map();
 
-Object.entries(SAMPLE).forEach(([category, menus]) => {
-  const array = menus.split(',').map((element) => element.trim());
-  map.set(category, array);
+newArray.forEach(([category, menus], index) => {
+  map.set(index + 1, [category, menus]);
 });
 
-export const MENUS = Object.fromEntries(map);
-
-export const CATEGORY_NUMBER = Object.freeze({
-  일식 : 1,
-  한식 : 2,
-  중식 : 3,
-  아시안 : 4,
-  양식 : 5,
-});
-
-
-
-
-
-
+export const MENUS = map;
