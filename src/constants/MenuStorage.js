@@ -31,7 +31,7 @@ const allMenus = () => {
     return acc.concat(cur);
   }, [])
 
-  return result;
+  return result.concat('');
 };
 
 export const MENUS_ARRAY = allMenus();

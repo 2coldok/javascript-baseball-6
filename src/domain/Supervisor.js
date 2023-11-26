@@ -19,10 +19,11 @@ class Supervisor {
     this.#coachs[coachIndex].setHateMenus(hateMenus);
   }
 
+  // 카테고리 넘버를 push 하기 전 미리 대조해보는 작업
   #isOverCategory(categoryNumber) {
-    const count = this.#categoryNumbers.filter((element) => element === categoryNumber);
+    const inputNumbers = this.#categoryNumbers.filter((element) => element === categoryNumber);
     
-    if (count >= 2) {
+    if (inputNumbers.length >= 2) {
       return true;
     }
     return false;

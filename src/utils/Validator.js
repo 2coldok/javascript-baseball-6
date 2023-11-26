@@ -60,6 +60,10 @@ const dupleMenu = (array) => {
 
 export const validateMenus = (hateMenus) => {
   const array = hateMenus.split(',').map((element) => element.trim());
+  
+  if (array.length === 2 && array.includes('')) {
+    throw new Error('[ERROR] 이름이 없는 메뉴가 있습니다');
+  }
 
   nonMenu(array);
   menuLimit(array);
