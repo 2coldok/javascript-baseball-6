@@ -1,5 +1,13 @@
+import LunchController from "./controller/LunchController.js";
+
 class App {
-  async play() {}
+  async play() {
+    const lunchController = new LunchController();
+    lunchController.startRecommand();
+  }
 }
 
 export default App;
+
+const app = new App();
+app.play();

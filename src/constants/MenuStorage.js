@@ -18,3 +18,20 @@ newArray.forEach(([category, menus], index) => {
 });
 
 export const MENUS = map;
+
+// 없는 메뉴 찾기 위해 모든 메뉴를 하나의 배열로 만드는 과정
+const allMenus = () => {
+  const all = Array.from(MENUS).map((element) => {
+    const [categoryNumber, data] = element;
+    const [category, menus] = data;
+    return menus;
+  });
+  
+  const result = all.reduce((acc, cur) => {
+    return acc.concat(cur);
+  }, [])
+
+  return result;
+};
+
+export const MENUS_ARRAY = allMenus();

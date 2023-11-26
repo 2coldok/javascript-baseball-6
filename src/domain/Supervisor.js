@@ -1,50 +1,76 @@
 import Coach from "./Coach.js";
+import { Random } from "@woowacourse/mission-utils";
+import { validateNames, validateMenus } from "../utils/Validator.js";
 
 class Supervisor {
   #coachs = [];
+  #categoryNumbers = [];
+  #recommandCycle = 0;
 
-  constructor() {
-
-  }
-  
-  // 한명씩 세팅
   setNames(names) {
+    validateNames(names);
     names.split(',').forEach((name) => {
-      this.#coachs.push(new Coach(name));
+      this.#coachs.push(new Coach(name.trim()));
     });
   }
 
-  // 한명씩 세팅
   setHateMenus(coachIndex, hateMenus) {
+    validateMenus(hateMenus);
     this.#coachs[coachIndex].setHateMenus(hateMenus);
   }
+
+  #isOverCategory(categoryNumber) {
+    const count = this.#categoryNumbers.filter((element) => element === categoryNumber);
+    
+    if (count >= 2) {
+      return true;
+    }
+    return false;
+  }
   
-  // 모든 코치들에 대한 결과
-  getNameWithRecommandMenus(categoryNumbers) {
-    const result = this.#coachs.map((coach) => {
-      return [coach.getName(), ...coach.getRecommandMenus(categoryNumbers)];
+  #randomCategory() {
+    const number = Random.pickNumberInRange(1,5);
+    if (this.#isOverCategory(number)) {
+      return this.#randomCategory();
+    }
+    this.#categoryNumbers.push(number);
+    return number;
+  }
+  
+  setMenus() {
+    const categoryNumber = this.#randomCategory();
+    this.#coachs.forEach((coach) => {
+      coach.setRecommandMenu(categoryNumber);
     });
-    return result;
+    this.#recommandCycle += 1;
+    
+    if (this.#recommandCycle !== 5) {
+      return this.setMenus();
+    }
+  }
+  
+  getNameWithMenus() {
+    const reuslt = this.#coachs.map((coach) => {
+      const menus = coach.getRecommandMenus();
+      menus.unshift(coach.getName());
+      return menus;
+    });
+    return reuslt;
+  }
+
+  getCategoryNumber() {
+    return this.#categoryNumbers;
+  }
+
+  getName(index) {
+    const name = this.#coachs[index].getName();
+    
+    return name;
+  }
+
+  getCoachNumbers() {
+    return this.#coachs.length;
   }
 }
 
 export default Supervisor;
-
-const a = new Supervisor();
-a.setNames('수향,연희,찬웅');
-a.setHateMenus(0, '고추잡채,파인애플 볶음밥');
-a.setHateMenus(1, '고추잡채,파인애플 볶음밥');
-a.setHateMenus(2, '스시,쌀국수');
-
-const k = a.getNameWithRecommandMenus([1,1,3,4,4]);
-
-console.log(k);
-/*
-[
-  [ '수향', '스시', '스시', '탕수육', '월남쌈', '분짜' ],
-  [ '연희', '스시', '오코노미야끼', '토마토 달걀볶음', '나시고렝', '팟타이' ],
-  [ '찬웅', '라멘', '규동', '짜장면', '카오 팟', '파인애플 볶음밥' ]
-]
-*/
-
-

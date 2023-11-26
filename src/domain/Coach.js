@@ -4,6 +4,7 @@ import { Random } from "@woowacourse/mission-utils";
 class Coach {
   #name;
   #hateMenus;
+  #recommandMenus = [];
   
   constructor(name) {
     this.#name = name;
@@ -13,38 +14,38 @@ class Coach {
     this.#hateMenus = hateMenus.split(',');
   }
 
-  #isBadMenus(recommandMenus) {
-    const bad = recommandMenus.filter((menu) => this.#hateMenus.includes(menu));
-    if (bad.length === 0) return false;
-    return true;
-  }
-
-  #recommandMenus(categoryNumbers) {
-    const menus = categoryNumbers.map((number) => {
-      const [_, menus] = MENUS.get(number);
-      const indexArray = Array.from({ length : menus.length }, (_, index) => index);
-      const randomIndex = Random.shuffle(indexArray)[0];
-      return menus[randomIndex];
-    });
-    return menus;
-  }
-
-  getRecommandMenus(categoryNumbers) {
-    const tempMenus = this.#recommandMenus(categoryNumbers);
-    if (this.#isBadMenus(tempMenus)) {
-      return this.getRecommandMenus(categoryNumbers);
+  #isHateMenu(randomMenu) {
+    if (this.#hateMenus.includes(randomMenu)) {
+      return true;
     }
-    return tempMenus;
+    return false;
+  }
+
+  #isDupleMenu(randomMenu) {
+    if (this.#recommandMenus.includes(randomMenu)) {
+      return true;
+    }
+    return false;
   }
   
+  setRecommandMenu(categoryNumber) {
+    const [category, menus] = MENUS.get(categoryNumber);
+    const indexArray = Array.from({ length : menus.length }, (_, index) => index);
+    const menu = menus[Random.shuffle(indexArray)[0]];
+
+    if (this.#isHateMenu(menu) || this.#isDupleMenu(menu)) {
+      return this.setRecommandMenu(categoryNumber);
+    }
+    this.#recommandMenus.push(menu);
+  }
+
   getName() {
     return this.#name;
+  }
+
+  getRecommandMenus() {
+    return this.#recommandMenus;
   }
 }
 
 export default Coach;
-/*
-const a = new Coach();
-a.setHateMenus('스시,규동,미소시루,라멘');
-console.log(a.getRecommandMenus([1,1,1,1,1]));*/
-
