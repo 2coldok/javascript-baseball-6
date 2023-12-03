@@ -29,12 +29,12 @@ class LadderController {
     
     this.coordinate = ladderFactory.getCoordinate();
     const input = this.coordinate;
-    console.log(input);
+    
     this.players.forEach((_, index) => {
       this.playerResult.push(new Player(index, input));
-      console.log(input);
+      
     });
-    console.log(input);
+    
 
     OutputView.printLadder(this.supervisor.getLadderBluePrint(this.ladderMap));
 
