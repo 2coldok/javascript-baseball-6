@@ -1,0 +1,9 @@
+
+class LadderFactory {
+
+  constructor() {
+
+  }
+
+  
+}

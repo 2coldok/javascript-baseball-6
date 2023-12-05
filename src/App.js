@@ -1,3 +1,4 @@
+
 class App {
   async play() {}
 }
