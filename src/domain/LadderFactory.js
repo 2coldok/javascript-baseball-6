@@ -7,10 +7,12 @@ class LadderFactory {
   #ladderHeight;
 
   #validateIndex = 0;
+  #bodyCoordinate;
 
   constructor(ladderNumber, ladderHeight) {
     this.#ladderNumber = ladderNumber;
     this.#ladderHeight = ladderHeight;
+    this.#bodyCoordinate = this.setBodyCoordinate();
   }
 
   #coordinateValidator(coordinate) {
@@ -30,14 +32,14 @@ class LadderFactory {
   }
   
   // [ [ 1, 0, 1 ], [ 0, 1, 0 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [ 1, 0, 0 ] ]
-  getBodyCoordinate() {
+  setBodyCoordinate() {
     const coordinate = [];
     while (coordinate.length < this.#ladderHeight) {
       const row = bridgeShuffling(this.#ladderNumber);
       coordinate.push(row);
     }
     if (this.#coordinateValidator(coordinate)) {
-      return this.getBodyCoordinate();
+      return this.setBodyCoordinate();
     }
     return coordinate;
   }
@@ -60,6 +62,10 @@ class LadderFactory {
 
     return headArray.join(' ');
   }
+
+  getBodyCoordinate() {
+    return this.#bodyCoordinate;
+  }
   
   /* [
   '|     |-----|     |',
@@ -69,7 +75,7 @@ class LadderFactory {
   '|     |-----|     |'
 ]*/
   getBodyLog() {
-    return this.getBodyCoordinate().map((element) => this.#coordinateFilter(element));
+    return this.#bodyCoordinate.map((element) => this.#coordinateFilter(element));
   }
   
   // [1,1,0,0] -> O     O     X     X  
