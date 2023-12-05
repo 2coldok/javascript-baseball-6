@@ -41,9 +41,60 @@ class LadderFactory {
     }
     return coordinate;
   }
+  
+  // [1, 0, 1] -> |-----|     |-----|
+  #coordinateFilter(rowCoordinate) {
+    const rowLog = rowCoordinate.map((element) => {
+      if (element === 1) {
+        return '|-----';
+      }
+      if (element === 0) {
+        return '|     ';
+      }
+    });
+    return rowLog.concat('|').join('');
+  }
+  // ['cat', 'dog', 'ksh', 'lcw']
+  getHeadLog(namesArray) {
+    const headArray = namesArray.map((name) => name.padEnd(5, ' '));
+
+    return headArray.join(' ');
+  }
+  
+  /* [
+  '|     |-----|     |',
+  '|-----|     |-----|',
+  '|-----|     |     |',
+  '|     |-----|     |',
+  '|     |-----|     |'
+]*/
+  getBodyLog() {
+    return this.getBodyCoordinate().map((element) => this.#coordinateFilter(element));
+  }
+  
+  // [1,1,0,0] -> O     O     X     X  
+  getTailLog(goodsArray) {
+    const tailArray = goodsArray.map((element) => {
+      if (element === 1) {
+        return 'O'.padEnd(5, ' ');
+      }
+      if (element === 0) {
+        return 'X'.padEnd(5, ' ');
+      }
+    });
+
+    return tailArray.join(' ');
+  }
 }
 
 export default LadderFactory;
 /*
-const a = new LadderFactory(4,5);
-console.log(a.getBodyCoordinate());*/
+const a = new LadderFactory(10,5);
+
+const k = a.getHeadLog(['cat', 'dog', 'ksh', 'lcw']);
+const m = a.getTailLog([1,1,0,0]);
+const j = a.getBodyLog();
+
+console.log(k);
+j.forEach((e) => console.log(e));
+console.log(m);*/
