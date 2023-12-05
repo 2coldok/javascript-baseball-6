@@ -3,6 +3,7 @@ import LadderCalculator from "../domain/LadderCalculator.js";
 import InputView from "../view/InputView.js";
 import OutputView from "../view/OutputView.js";
 import { goodsShuffling } from "../utils/RandomGenerator.js";
+import { playersValidator } from "../utils/Validator.js";
 
 class LadderController {
   players;
@@ -42,11 +43,14 @@ class LadderController {
 
   async getPlayers() {
     try {
-      this.players = await InputView.readPlayers();
+      const playersArray = await InputView.readPlayers();
+      playersValidator(playersArray);
+      this.players = playersArray;
       OutputView.printBlank();
 
     } catch (error) {
-
+      OutputView.printError(error);
+      return await this.getPlayers();
     }
   }
 
@@ -59,7 +63,8 @@ class LadderController {
       this.goodsArray = goodsShuffling(beforeGoodsArray); 
       OutputView.printBlank();
     } catch (error) {
-
+      OutputView.printError(error);
+      return await this.getGoodsNumber();
     }
   }
 
@@ -68,7 +73,8 @@ class LadderController {
       this.height = await InputView.readLadderHeight();
       OutputView.printBlank();
     } catch (error) {
-
+      OutputView.printError(error);
+      return await this.getLadderHeight();
     }
   }
 
@@ -80,7 +86,8 @@ class LadderController {
       }
       return this.players.indexOf(choice);
     } catch (error) {
-
+      OutputView.printError(error);
+      return await this.getChoice();
     }
   }
 

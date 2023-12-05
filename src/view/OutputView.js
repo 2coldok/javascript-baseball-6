@@ -26,6 +26,10 @@ const OutputView = {
     });
   },
 
+  printError(error) {
+    Console.print(`${error}`);
+  },
+
   printBlank() {
     Console.print('');
   },
