@@ -13,13 +13,14 @@ export const bridgeShuffling = (ladderNumber) => {
 
   while (computer.length < maxBridgeNumber) {
     const random = Random.shuffle([0, 1])[0];
-    if (computer.at(-1) !== random) {
+    if (!(computer.at(-1) === 1 && random === 1)) {
       computer.push(random);
     }
   }
 
   return computer;
 };
+
 /*
 const a = bridgeShuffling(4);
 console.log(a);*/
