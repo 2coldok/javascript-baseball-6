@@ -43,3 +43,33 @@ export const playersValidator = (array) => {
   nameDuple(array);
 };
 
+///
+const NUMBER = /^[0-9]*$/
+
+export const goodsNumberValidator = (goodsNumber, ladderNumber) => {
+  if (!NUMBER.test(String(goodsNumber))) {
+    throw new Error('[ERROR] 숫자가 아닌 무언가가 포함되어 있습니다.');
+  }
+
+  if (goodsNumber < 1 || goodsNumber > ladderNumber -1) {
+    throw new Error(`[ERROR] 당첨 개수는 최소 1개 최대 ${ladderNumber - 1}개 입니다`);
+  }
+};
+
+export const ladderHeightValidator = (ladderHeight) => {
+  if (!NUMBER.test(String(ladderHeight))) {
+    throw new Error('[ERROR] 숫자가 아닌 무언가가 포함되어 있습니다.');
+  }
+  
+  if (ladderHeight < 2 || ladderHeight > 10) {
+    throw new Error('[ERROR] 사다리 높이는 최소 2 최대 10 입니다.');
+  }
+};
+
+export const choiceValidator = (choice, playersArray) => {
+  const list = playersArray.concat('A');
+  
+  if (!list.includes(choice)) {
+    throw new Error('[ERROR] 잘못된 입력입니다. 플레이어 이름 또는 A를 눌러주세요');
+  }
+};

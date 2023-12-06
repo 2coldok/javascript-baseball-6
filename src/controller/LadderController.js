@@ -3,7 +3,7 @@ import LadderCalculator from "../domain/LadderCalculator.js";
 import InputView from "../view/InputView.js";
 import OutputView from "../view/OutputView.js";
 import { goodsShuffling } from "../utils/RandomGenerator.js";
-import { playersValidator } from "../utils/Validator.js";
+import { playersValidator, goodsNumberValidator, ladderHeightValidator, choiceValidator } from "../utils/Validator.js";
 
 class LadderController {
   players;
@@ -57,6 +57,7 @@ class LadderController {
   async getGoodsNumber() {
     try {
       const goodsNumber = await InputView.readGoodsNumber();
+      goodsNumberValidator(goodsNumber, this.players.length);
       const success = Array.from({ length : goodsNumber }, () => 1);
       const fail = Array.from({ length : this.players.length - goodsNumber}, () => 0);
       const beforeGoodsArray = success.concat(fail);
@@ -70,7 +71,9 @@ class LadderController {
 
   async getLadderHeight() {
     try {
-      this.height = await InputView.readLadderHeight();
+      const heightNumber = await InputView.readLadderHeight();
+      ladderHeightValidator(heightNumber);
+      this.height = heightNumber;
       OutputView.printBlank();
     } catch (error) {
       OutputView.printError(error);
@@ -81,6 +84,8 @@ class LadderController {
   async getChoice() {
     try {
       const choice = await InputView.readChoice();
+      choiceValidator(choice, this.players);
+
       if (choice === 'A') {
         return -1;
       }
